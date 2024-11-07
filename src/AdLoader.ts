@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
-
 import { NativeEventEmitter, Platform } from 'react-native';
 import { AdError } from './AdError';
 import AdLoaderModule from './internal/AdLoaderModule';
@@ -27,11 +26,8 @@ import {
   validateAdLoaderOptions,
   validateBannerAdLoaderOptions,
 } from './types/AdLoaderOptions';
-import { AdType } from './types/AdType';
+import { AdType } from './types';
 
-/**
- * @public
- */
 export class AdLoader {
   private static readonly _nativeModule = AdLoaderModule;
   private static readonly _eventEmitter = new NativeEventEmitter(
@@ -49,8 +45,6 @@ export class AdLoader {
 
   /**
    * Create a banner AdLoader instance.
-   * @param adLoaderOptions - `BannerAdLoaderOptions` object used to configure the bid request.
-   * @returns AdLoader instance.
    */
   static createBannerAdLoader(adLoaderOptions: BannerAdLoaderOptions) {
     try {
@@ -66,8 +60,6 @@ export class AdLoader {
 
   /**
    * Create a interstitial AdLoader instance.
-   * @param adLoaderOptions - `AdLoaderOptions` object used to configure the bid request.
-   * @returns AdLoader instance.
    */
   static createInterstitialAdLoader(adLoaderOptions: AdLoaderOptions) {
     try {
@@ -85,12 +77,6 @@ export class AdLoader {
    * Add a listener for the bid response. Supported events are:
    * - `AdLoaderEvent.SUCCESS`
    * - `AdLoaderEvent.FAILURE`
-   * @param eventName - The name of the event to listen.
-   * @param listener - The listener to be called when the event is fired.
-   *
-   * @returns Unsubscribe function.
-   *
-   * @public
    */
   addListener<E extends AdLoaderEvent>(
     eventName: E,
@@ -126,9 +112,6 @@ export class AdLoader {
    * Request APS for a bid. Only a single ad size and slotUUID is supported per bid request.
    * This method will return a promise that resolves a bid response requested by this call.
    * In order to receive further bid responses returned by auto refresh, you must register listeners via `addListener()`.
-   * @returns Promise of key value pairs from returned bid response.
-   *
-   * @public
    */
   async loadAd() {
     try {
@@ -149,7 +132,6 @@ export class AdLoader {
   /**
    * Stop the auto refresh of the ad.
    *
-   * @public
    */
   stopAutoRefresh() {
     AdLoader._nativeModule.stopAutoRefresh(this.loaderId);
@@ -157,10 +139,6 @@ export class AdLoader {
 
   /**
    * In order for SKAdNetwork to work, pass the app event.
-   * @param name - The name of the event.
-   * @param info - The data/info with the event.
-   *
-   * @public
    */
   static skadnHelper(name: string, info?: string) {
     if (typeof name !== 'string') {

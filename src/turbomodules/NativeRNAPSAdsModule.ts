@@ -16,9 +16,16 @@
  * along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { TurboModule, TurboModuleRegistry } from 'react-native';
+import type { TurboModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
 
-import type { AdNetworkInfo, MRAIDPolicy } from '../types';
+interface AdNetworkInfo {
+  /**
+   * The name of the primary ad server or mediator
+   */
+  adNetwork: string;
+  adNetworkProperties?: { [key: string]: string };
+}
 
 /**
  * @internal
@@ -30,7 +37,7 @@ export interface Spec extends TurboModule {
 
   setMRAIDSupportedVersions: (supportedVersions: string[]) => void;
 
-  setMRAIDPolicy: (policy: MRAIDPolicy) => void;
+  setMRAIDPolicy: (policy: string) => void;
 
   setTestMode: (enabled: boolean) => void;
 
@@ -41,4 +48,4 @@ export interface Spec extends TurboModule {
   removeCustomAttribute: (key: string) => void;
 }
 
-export default TurboModuleRegistry.get<Spec>('RNAPSAdsModule');
+export default TurboModuleRegistry.getEnforcing<Spec>('RNAPSAdsModule');
